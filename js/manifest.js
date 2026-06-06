@@ -465,6 +465,21 @@ function L(id, title, level) {
   return { id: id, title: title, level: level || "intermediate", status: "stub" };
 }
 
+/* Modules whose full lessons have been authored. Adding a module id here flips
+   all of its lessons to "complete" and auto-derives their file paths
+   (content/lessons/<moduleId>/<lessonId>.js). M0–M4 are authored explicitly
+   above with their own file paths, so they don't need to be listed. */
+var COMPLETED_MODULES = {
+  "05-modules": 1, "06-npm": 1, "07-fs": 1, "08-buffers": 1, "09-events": 1,
+  "10-streams": 1, "11-process": 1, "12-clis": 1, "13-networking": 1, "14-http": 1,
+  "15-frameworks": 1, "16-rest": 1, "17-sql": 1, "18-orms": 1, "19-nosql": 1,
+  "20-auth": 1, "21-typescript": 1, "22-testing": 1, "23-toolchain": 1, "24-monorepos": 1,
+  "25-concurrency": 1, "26-realtime": 1, "27-queues": 1, "28-grpc-graphql": 1,
+  "29-microservices": 1, "30-performance": 1, "31-v8": 1, "32-memory-leaks": 1,
+  "33-native": 1, "34-observability": 1, "35-docker": 1, "36-cicd-k8s": 1,
+  "37-serverless-edge": 1, "38-scalability": 1, "39-security": 1, "40-capstone": 1
+};
+
 /* ---- normalize: build flat order, lookup maps, and counts ---- */
 (function normalize(course) {
   course.flat = [];
@@ -476,6 +491,11 @@ function L(id, title, level) {
       lesson.moduleId = mod.id;
       lesson.indexInModule = idx;
       lesson.tier = mod.tier;
+      // Promote whole modules to "complete" + derive their lesson file paths.
+      if (COMPLETED_MODULES[mod.id]) {
+        lesson.status = "complete";
+        if (!lesson.file) lesson.file = "content/lessons/" + mod.id + "/" + lesson.id + ".js";
+      }
       if (!lesson.summary && mod.summary) lesson.summary = mod.summary;
       if (lesson.project) projects++;
       course.flat.push(lesson);

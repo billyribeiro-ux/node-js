@@ -43,9 +43,9 @@ npx serve .
 - **Next / Previous** navigation (or use the ← / → arrow keys), a collapsible sidebar,
   light/dark themes (`t` to toggle), and **automatic progress tracking** saved in your browser.
 
-The **Foundations** tier (Modules 0–4) is authored in full depth. The remaining modules are
-fully mapped in the curriculum with their learning objectives and projects, and render a
-"coming soon" outline until their narrated content is filled in.
+**All 41 modules (136 lessons) are authored in full depth** — every lesson has narrated
+prose, runnable editors, exercises with reveal-able solutions, and a hands-on project, from
+absolute beginner through distinguished-principal-engineer topics.
 
 ## Project layout
 

@@ -20,6 +20,19 @@
     if (pending[id]) { pending[id].resolve(markdown); delete pending[id]; }
   };
 
+  // Alternative hook: lesson content lives inside a function's block comment, so
+  // authors can write real backticks and ${...} with NO escaping. The only rule
+  // is the content must not contain the literal sequence that closes a block
+  // comment. We extract everything between the first /* and the last */.
+  window.registerLessonSrc = function (id, fn) {
+    var src = String(fn);
+    var start = src.indexOf("/*");
+    var end = src.lastIndexOf("*/");
+    var body = (start !== -1 && end > start) ? src.slice(start + 2, end) : "";
+    body = body.replace(/^\r?\n/, ""); // drop the first newline so front-matter is at col 0
+    window.registerLesson(id, body);
+  };
+
   function loadLesson(entry) {
     if (registry[entry.id]) return Promise.resolve(registry[entry.id]);
     return new Promise(function (resolve, reject) {
