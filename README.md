@@ -39,7 +39,15 @@ npx serve .
   - **Tier 5 — Advanced & Principal:** threads, real-time, queues, gRPC/GraphQL, microservices,
     performance, V8 internals, memory leaks, native addons, observability, Docker, CI/CD,
     Kubernetes, serverless/edge, scalability, security, and principal-level capstones
-- A live **▶ Run** button for pure-JavaScript snippets (sandboxed in a Web Worker).
+- A live **▶ Run** button for pure-JavaScript snippets (sandboxed in a Web Worker), and an
+  **⚡ Open in StackBlitz** button on Node-only examples to run the real thing (servers, `fs`,
+  `npm`) in a Node sandbox.
+- A **⌘/Ctrl+K command palette** with fuzzy search across all 136 lessons (or press `/`).
+- A **Knowledge check** quiz (3 questions, instant feedback) and **Further reading** links at the
+  end of every lesson — 408 questions and 644 curated links in total.
+- Hand-drawn **concept diagrams** (event loop, streams/backpressure, GC, circuit breaker, …),
+  an **"On this page"** mini-TOC with scroll-spy, and a per-lesson **reading-progress bar**.
+- A **settings panel** (gear icon): adjust reading text size, export/import/reset your progress.
 - **Next / Previous** navigation (or use the ← / → arrow keys), a collapsible sidebar,
   light/dark themes (`t` to toggle), and **automatic progress tracking** saved in your browser.
 

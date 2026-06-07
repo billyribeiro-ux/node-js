@@ -16,6 +16,8 @@ objectives:
 
 Streams would be useless if a fast producer could simply overwhelm a slow consumer. The mechanism that prevents this is **backpressure** — one of the most important (and most misunderstood) concepts in Node. Get it wrong and your server quietly allocates unbounded memory until it crashes. Get it right and you can pipe gigabytes through a 64 MB process all day.
 
+@diagram:backpressure
+
 ## Learning objectives
 
 - Define backpressure and explain when and why it occurs.

@@ -20,6 +20,8 @@ stack overflow answers, tutorials, and third-party integrations. Understanding i
 the **middleware chain** — also gives you the vocabulary to understand every other Node framework,
 because they all borrowed from it.
 
+@diagram:http-lifecycle
+
 ## Learning objectives
 
 - Explain how `next()` chains middleware together and what happens when you forget to call it.

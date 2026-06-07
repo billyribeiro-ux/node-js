@@ -16,6 +16,8 @@ objectives:
 
 You can use Node without knowing what's inside it — for a while. But every advanced topic in this course (the event loop, streams, worker threads, performance, native addons) assumes you understand Node's architecture. Ten minutes building an accurate mental model now pays off for the rest of your career. Let's open the box.
 
+@diagram:node-architecture
+
 ## Learning objectives
 
 - Describe Node's main ingredients: **V8**, **libuv**, and the **core library**.

@@ -16,6 +16,8 @@ objectives:
 
 A **promise** is JavaScript's object for "a value that will exist later." It's the foundation of all modern async code — \`async/await\` is just nicer syntax over promises. Understand promises deeply and async stops being scary. Stay fuzzy on them and you'll write subtle bugs forever. We're going to make them crystal clear.
 
+@diagram:promise-states
+
 ## Learning objectives
 
 - Explain a promise's three **states**.

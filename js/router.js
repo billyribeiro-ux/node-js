@@ -52,14 +52,84 @@
     });
   }
 
+  var teardown = null; // cleans up per-lesson listeners / floating UI
+
   function setContent(node) {
     var content = document.getElementById("content");
+    if (teardown) { try { teardown(); } catch (e) {} teardown = null; }
     if (window.MonacoKit) window.MonacoKit.disposeAll();
     content.innerHTML = "";
     if (typeof node === "string") content.innerHTML = node;
     else content.appendChild(node);
     content.scrollTop = 0;
     window.scrollTo(0, 0);
+    setReadingProgress(0);
+  }
+
+  function setReadingProgress(pct) {
+    var fill = document.getElementById("reading-progress-fill");
+    if (fill) fill.style.width = pct + "%";
+  }
+
+  /* ---------- inject concept diagrams ---------- */
+  function injectDiagrams(container) {
+    if (!window.DIAGRAMS) return;
+    container.querySelectorAll(".diagram[data-diagram]").forEach(function (fig) {
+      var d = window.DIAGRAMS[fig.dataset.diagram];
+      if (!d) { fig.remove(); return; }
+      fig.innerHTML = d.svg + (d.title ? '<figcaption>' + d.title + "</figcaption>" : "");
+    });
+  }
+
+  /* ---------- mini "on this page" TOC + scroll-spy + reading progress ---------- */
+  function setupLessonChrome(article) {
+    var headings = Array.prototype.slice.call(article.querySelectorAll("h2, h3"));
+    var aside = null, links = [];
+    if (headings.length >= 3) {
+      aside = document.createElement("aside");
+      aside.className = "minitoc";
+      aside.innerHTML = '<div class="minitoc-title">On this page</div>';
+      var ul = document.createElement("ul");
+      headings.forEach(function (h, i) {
+        if (!h.id) h.id = "h-" + i;
+        var li = document.createElement("li");
+        li.className = "minitoc-" + h.tagName.toLowerCase();
+        var a = document.createElement("a");
+        a.href = "#/" + ""; // prevent hash routing; we scroll manually
+        a.textContent = h.textContent;
+        a.addEventListener("click", function (e) {
+          e.preventDefault();
+          h.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        li.appendChild(a);
+        ul.appendChild(li);
+        links.push({ h: h, a: a });
+      });
+      aside.appendChild(ul);
+      document.getElementById("content").appendChild(aside);
+    }
+
+    function onScroll() {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - doc.clientHeight;
+      var pct = max > 0 ? Math.min(100, Math.round((doc.scrollTop || window.scrollY) / max * 100)) : 0;
+      setReadingProgress(pct);
+      if (links.length) {
+        var top = (doc.scrollTop || window.scrollY) + 120;
+        var activeIdx = 0;
+        for (var i = 0; i < links.length; i++) {
+          if (links[i].h.offsetTop <= top) activeIdx = i;
+        }
+        links.forEach(function (l, i) { l.a.classList.toggle("active", i === activeIdx); });
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    return function () {
+      window.removeEventListener("scroll", onScroll);
+      if (aside) aside.remove();
+    };
   }
 
   /* ---------- upgrade code blocks to Monaco ---------- */
@@ -109,13 +179,26 @@
             });
           });
       } else {
+        // Node-only JS/TS reference code gets an "Open in StackBlitz" button so
+        // learners can run the real thing (servers, fs, npm) in a Node sandbox.
+        var isNodeCode = /^(js|javascript|ts|typescript)$/.test(b.lang);
+        if (isNodeCode && window.StackBlitz) {
+          var sbBtn = mkBtn("⚡ Open in StackBlitz", "btn btn-ghost btn-sb");
+          sbBtn.title = "Run this on real Node.js in a new tab";
+          toolbar.appendChild(sbBtn);
+          sbBtn.addEventListener("click", function () {
+            window.StackBlitz.openSnippet(currentValue(), entry ? entry.title : "Node snippet");
+          });
+        }
         var copyBtn2 = mkBtn("Copy", "btn btn-ghost");
         toolbar.appendChild(copyBtn2);
         card.appendChild(toolbar);
         card.appendChild(host);
         placeholder.replaceWith(card);
+        var currentValue = function () { return b.code; };
         window.MonacoKit.create(host, { code: b.code, language: jsLang(b.lang), readOnly: (b.mode === "readonly") })
           .then(function (editor) {
+            currentValue = function () { return editor.getValue(); };
             copyBtn2.addEventListener("click", function () {
               navigator.clipboard && navigator.clipboard.writeText(editor.getValue());
               copyBtn2.textContent = "Copied!"; setTimeout(function () { copyBtn2.textContent = "Copy"; }, 1200);
@@ -157,18 +240,24 @@
       '<span class="pill">' + mod.tier + "</span></div>";
 
     article.innerHTML = head + meta + parsed.html +
+      '<div class="lesson-extras-host"></div>' +
       '<div class="lesson-nav-host"></div>';
-
-    // objectives front-matter -> checklist near the top isn't auto-injected;
-    // lessons author their own "Learning objectives" section for control.
 
     // append nav
     var navHost = article.querySelector(".lesson-nav-host");
     navHost.innerHTML = window.Nav.render(entry.id);
 
     setContent(article);
+    injectDiagrams(article);
     upgradeEditors(article, parsed.blocks);
     window.Nav.wire(entry.id, article);
+
+    // quizzes + further reading (lazy-loaded per module)
+    if (window.Extras) {
+      window.Extras.render(article.querySelector(".lesson-extras-host"), entry.moduleId, entry.id);
+    }
+
+    teardown = setupLessonChrome(article);
     document.title = entry.title + " — Ultimate Node.js Course";
   }
 

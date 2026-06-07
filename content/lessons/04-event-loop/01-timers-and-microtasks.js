@@ -16,6 +16,8 @@ objectives:
 
 There are two distinct queues of deferred work in Node: **macrotasks** (timers, I/O, setImmediate) and **microtasks** (promises, \`queueMicrotask\`, \`process.nextTick\`). Misunderstanding their priority causes ordering bugs and — worse — **event loop starvation**, where greedy microtasks freeze your server. This lesson makes the rules exact so you never guess again.
 
+@diagram:task-queues
+
 ## Learning objectives
 
 - Define **macrotask** vs **microtask** and their priority.

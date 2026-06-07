@@ -16,6 +16,8 @@ objectives:
 
 In a distributed system, failure is not an edge case — it is a routine operating condition. A database goes slow, a downstream API rate-limits you, a container gets OOM-killed mid-request. How your service *behaves* during those moments determines whether you have a blip or an outage. The patterns in this lesson — timeouts, retries, and circuit breakers — are what separate a service that gracefully degrades from one that silently amplifies failures across the whole system.
 
+@diagram:circuit-breaker
+
 ## Learning objectives
 
 - Understand why failure must be assumed and designed for, not hoped away.

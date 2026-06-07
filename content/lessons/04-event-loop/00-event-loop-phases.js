@@ -16,6 +16,8 @@ objectives:
 
 The **event loop** is the heart of Node. It's *why* a single thread can serve thousands of connections. Most developers have a vague sense of it; the ones who truly understand it can reason about execution order, avoid subtle bugs, and never get surprised by async behaviour again. This is the lesson that turns "Node is confusing" into "Node is obvious." Read it slowly.
 
+@diagram:event-loop
+
 ## Learning objectives
 
 - Explain the **event loop** in plain English.

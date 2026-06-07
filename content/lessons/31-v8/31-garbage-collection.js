@@ -16,6 +16,8 @@ objectives:
 
 Garbage collection is invisible — until it is not. A Node server that allocates aggressively can pause for tens of milliseconds while the GC compacts old-generation objects. Those pauses show up as p99 latency spikes that are almost impossible to debug without understanding *why* they happen. Writing GC-friendly code is not premature optimisation for high-throughput services; it is the difference between a flat latency curve and one that terrifies your SREs.
 
+@diagram:gc-generations
+
 ## Learning objectives
 
 - Describe V8's **generational GC**: young generation (semi-space scavenge) and old generation (mark-sweep-compact).

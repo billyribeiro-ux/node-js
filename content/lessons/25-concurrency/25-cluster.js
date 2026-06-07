@@ -17,6 +17,8 @@ objectives:
 
 Node.js runs JavaScript in a single thread, so a single Node process can only use one CPU core at a time. On a 16-core machine you're leaving 15 cores completely idle. The `cluster` module solves this for network servers: fork one worker per CPU, have them all listen on the same port, and let the OS or Node distribute incoming connections across them. This is how real Node HTTP servers handle production traffic.
 
+@diagram:cluster
+
 ## Learning objectives
 
 - Describe how `cluster` forks workers and how they share a server port.
