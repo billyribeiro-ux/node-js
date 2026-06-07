@@ -69,6 +69,8 @@
     var ref = document.createElement("div");
     ref.className = "ref-band";
     ref.innerHTML =
+      '<a class="ref-card" href="#/review"><span class="ref-icon">🔁</span><div><strong>Review</strong>' +
+        "<span>Spaced-repetition flashcards</span></div></a>" +
       '<a class="ref-card" href="#/glossary"><span class="ref-icon">📖</span><div><strong>Glossary</strong>' +
         "<span>Every key term, defined</span></div></a>" +
       '<a class="ref-card" href="#/cheatsheets"><span class="ref-icon">⚡</span><div><strong>API Cheat-sheets</strong>' +

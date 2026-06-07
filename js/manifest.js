@@ -451,7 +451,111 @@ window.COURSE = {
         L("40-capstone-platform", "Capstone B: A Scaled Real-Time Platform", "principal"),
         L("40-capstone-engine", "Capstone C: A Job-Orchestration Engine", "principal")
       ],
-      "Assemble and document a horizontally-scaled, multi-service platform (queue + gRPC + GraphQL + OTel + k8s + CI/CD) with an architecture RFC.")
+      "Assemble and document a horizontally-scaled, multi-service platform (queue + gRPC + GraphQL + OTel + k8s + CI/CD) with an architecture RFC."),
+
+    /* ================= TIER 6 — DISTINGUISHED ENGINEER (L7++) ================= */
+    mod("41-v8-deep", "M41", "Tier 6", "Distinguished Engineer (L7++)", "V8 & JIT Deep Internals",
+      "Module 41 — V8 & JIT Deep Internals",
+      "Inside the engine: TurboFan IR & Sea of Nodes, speculative optimization, deoptimization, feedback vectors, and startup snapshots.",
+      [
+        L("41-jit-pipeline-deep", "Inside TurboFan: IR, Sea of Nodes & Speculation", "principal"),
+        L("41-deopt-analysis", "Deoptimization: Reading --trace-deopt & %-natives", "principal"),
+        L("41-inline-caches-deep", "Inline Caches, Maps & Feedback Vectors", "principal"),
+        L("41-snapshots", "Startup Snapshots, Code Cache & the SEA Blob", "principal")
+      ],
+      "Profile a hot path with --trace-opt/--trace-deopt, eliminate the deopts, and ship a custom startup snapshot — measure each win."),
+
+    mod("42-libuv-deep", "M42", "Tier 6", "Distinguished Engineer (L7++)", "libuv & OS I/O Internals",
+      "Module 42 — libuv & OS I/O Internals",
+      "Below Node: handles vs requests, the platform backends (epoll/kqueue/IOCP/io_uring), zero-copy, and file-descriptor limits at scale.",
+      [
+        L("42-loop-internals", "Handles, Requests & the Loop's Anatomy", "principal"),
+        L("42-os-backends", "epoll, kqueue, IOCP & io_uring", "principal"),
+        L("42-zerocopy-fds", "Zero-Copy, sendfile & File-Descriptor Limits", "principal")
+      ],
+      "Build a high-throughput TCP service, tune UV_THREADPOOL_SIZE and fd limits, and prove the gains with a load test."),
+
+    mod("43-async-context", "M43", "Tier 6", "Distinguished Engineer (L7++)", "Async Context & Diagnostics Internals",
+      "Module 43 — Async Context, Diagnostics & Tracing Internals",
+      "The plumbing behind request context and tracing: async_hooks lifecycle, AsyncLocalStorage internals, diagnostics_channel and trace events.",
+      [
+        L("43-async-hooks", "async_hooks Lifecycle & Resource Tracking", "principal"),
+        L("43-async-local-storage", "AsyncLocalStorage Internals & Context Propagation", "principal"),
+        L("43-diagnostics-deep", "diagnostics_channel, Trace Events & Continuous Profiling", "principal")
+      ],
+      "Build a zero-overhead request-context + tracing layer with AsyncLocalStorage and diagnostics_channel, and benchmark its cost."),
+
+    mod("44-mechanical-sympathy", "M44", "Tier 6", "Distinguished Engineer (L7++)", "Mechanical Sympathy",
+      "Module 44 — Mechanical Sympathy & Low-Level Performance",
+      "Make the hardware happy: CPU caches and cache lines, branch prediction, data-oriented design, allocation-free hot paths, and SIMD via WASM.",
+      [
+        L("44-cpu-caches", "CPU Caches, Cache Lines & Data-Oriented Design", "principal"),
+        L("44-branch-alloc", "Branch Prediction, GC Pressure & Allocation-Free Code", "principal"),
+        L("44-simd-wasm", "SIMD, WASM & Beating the JIT", "principal")
+      ],
+      "Take a numeric hot loop from naive JS to a cache-friendly, allocation-free, SIMD-accelerated version; chart each speedup."),
+
+    mod("45-distributed-theory", "M45", "Tier 6", "Distinguished Engineer (L7++)", "Distributed Systems Theory",
+      "Module 45 — Distributed Systems Theory & Data Consistency",
+      "The theory that anchors real systems: consistency models, consensus (Raft), logical/vector clocks, CRDTs, and the exactly-once myth.",
+      [
+        L("45-consistency-models", "Consistency Models: Linearizable to Eventual", "principal"),
+        L("45-consensus", "Consensus: Raft Leader Election & Log Replication", "principal"),
+        L("45-clocks-crdts", "Logical Clocks, Vector Clocks & CRDTs", "principal"),
+        L("45-exactly-once", "Idempotency, the Outbox & Exactly-Once Myths", "principal")
+      ],
+      "Implement a Raft leader-election state machine and a CRDT, then design an exactly-once-effectively pipeline with an outbox."),
+
+    mod("46-reliability", "M46", "Tier 6", "Distinguished Engineer (L7++)", "Reliability, SLOs & Capacity",
+      "Module 46 — Reliability, SLOs & Capacity Engineering",
+      "Run systems that stay up: SLIs/SLOs/error budgets, queueing theory (Little's Law, M/M/c, the USL), load shedding and graceful degradation.",
+      [
+        L("46-slo-error-budgets", "SLIs, SLOs & Error Budgets", "principal"),
+        L("46-queueing-theory", "Queueing Theory: Little's Law, M/M/c & the USL", "principal"),
+        L("46-load-shedding", "Load Shedding, Backpressure & Graceful Degradation", "principal")
+      ],
+      "Model a service with queueing theory, set SLOs and an error budget, then add adaptive load shedding and prove it under k6."),
+
+    mod("47-embedding-node", "M47", "Tier 6", "Distinguished Engineer (L7++)", "Building & Embedding Node",
+      "Module 47 — Building, Embedding & Extending Node",
+      "Own the runtime: build Node from source, custom builds and patches, the embedder API, and runtime instrumentation via custom loaders.",
+      [
+        L("47-build-from-source", "Building Node from Source & Custom Builds", "principal"),
+        L("47-embedder-api", "Embedding Node & the Node-API Embedder Interface", "principal"),
+        L("47-custom-loaders", "Custom ESM Loaders & Instrumentation at Scale", "principal")
+      ],
+      "Patch and build a custom Node, then ship a registrable ESM loader that instruments imports across a large codebase."),
+
+    mod("48-security-l7", "M48", "Tier 6", "Distinguished Engineer (L7++)", "Security Engineering (L7)",
+      "Module 48 — Security Engineering & Supply-Chain Assurance",
+      "Adversarial engineering at scale: trust boundaries and threat modeling, SLSA/provenance/reproducible builds, fuzzing and sandboxing.",
+      [
+        L("48-threat-modeling-scale", "Threat Modeling & Trust Boundaries at Scale", "principal"),
+        L("48-slsa-supplychain", "SLSA, Provenance & Reproducible Builds", "principal"),
+        L("48-fuzzing-sandboxing", "Fuzzing, Sandboxing & Isolation", "principal")
+      ],
+      "Threat-model a platform end-to-end, reach a SLSA build level, add a fuzzing harness, and sandbox untrusted code."),
+
+    mod("49-platform-eng", "M49", "Tier 6", "Distinguished Engineer (L7++)", "Platform Engineering at Scale",
+      "Module 49 — Platform Engineering & API Governance at Scale",
+      "Multiply other engineers: API versioning & schema evolution, consumer-driven contract testing, paved roads, golden paths and codemods.",
+      [
+        L("49-api-evolution", "API Versioning, Schema Evolution & Compatibility", "principal"),
+        L("49-contract-testing", "Consumer-Driven Contracts & Contract Testing", "principal"),
+        L("49-paved-roads", "Paved Roads, Golden Paths & Codemods at Scale", "principal")
+      ],
+      "Define an API-evolution policy with contract tests in CI, and ship a codemod that migrates every service to a new standard."),
+
+    mod("50-de-craft", "M50", "Tier 6", "Distinguished Engineer (L7++)", "The Distinguished Engineer's Craft",
+      "Module 50 — The Distinguished Engineer's Craft",
+      "The non-code multipliers of L7++: technical strategy, leading with RFCs/ADRs, scope & influence, the staff+ archetypes, and a final defense.",
+      [
+        L("50-technical-strategy", "Technical Strategy, Tech Radar & Build-vs-Buy", "principal"),
+        L("50-rfcs-adrs", "Leading with RFCs, ADRs & Decision Records", "principal"),
+        L("50-influence", "Scope, Influence & the Staff+ Archetypes", "principal"),
+        L("50-capstone-de", "Capstone: Design & Defend a Planet-Scale System", "principal")
+      ],
+      "Write a real RFC for a planet-scale system, run a design review, and defend your tradeoffs the way an L7++ engineer must.")
   ]
 };
 
@@ -477,7 +581,10 @@ var COMPLETED_MODULES = {
   "25-concurrency": 1, "26-realtime": 1, "27-queues": 1, "28-grpc-graphql": 1,
   "29-microservices": 1, "30-performance": 1, "31-v8": 1, "32-memory-leaks": 1,
   "33-native": 1, "34-observability": 1, "35-docker": 1, "36-cicd-k8s": 1,
-  "37-serverless-edge": 1, "38-scalability": 1, "39-security": 1, "40-capstone": 1
+  "37-serverless-edge": 1, "38-scalability": 1, "39-security": 1, "40-capstone": 1,
+  "41-v8-deep": 1, "42-libuv-deep": 1, "43-async-context": 1, "44-mechanical-sympathy": 1,
+  "45-distributed-theory": 1, "46-reliability": 1, "47-embedding-node": 1, "48-security-l7": 1,
+  "49-platform-eng": 1, "50-de-craft": 1
 };
 
 /* ---- normalize: build flat order, lookup maps, and counts ---- */

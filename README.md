@@ -30,15 +30,19 @@ npx serve .
 
 ## What's inside
 
-- **41 modules · 136 lessons · dozens of hands-on projects**, organised into six tiers:
+- **51 modules · 169 lessons · 50+ hands-on projects**, organised into seven tiers:
   - **Tier 0 — Orientation:** setup, running Node, the REPL
-  - **Tier 1 — Foundations:** JavaScript, async, the runtime, the event loop *(fully written)*
+  - **Tier 1 — Foundations:** JavaScript, async, the runtime, the event loop
   - **Tier 2 — Core APIs:** modules, npm, fs, streams, buffers, events, process
   - **Tier 3 — Building Real Things:** CLIs, HTTP, frameworks, REST, SQL, ORMs, NoSQL, auth
   - **Tier 4 — Engineering Quality:** TypeScript, testing, the modern toolchain, monorepos
   - **Tier 5 — Advanced & Principal:** threads, real-time, queues, gRPC/GraphQL, microservices,
     performance, V8 internals, memory leaks, native addons, observability, Docker, CI/CD,
     Kubernetes, serverless/edge, scalability, security, and principal-level capstones
+  - **Tier 6 — Distinguished Engineer (L7++):** V8/JIT & libuv internals, async-context &
+    diagnostics internals, mechanical sympathy, distributed-systems theory (consensus, CRDTs),
+    reliability/SLOs/queueing theory, building & embedding Node, security engineering, platform
+    engineering, and the distinguished-engineer's craft (strategy, RFCs, influence)
 - A live **▶ Run** button for pure-JavaScript snippets (sandboxed in a Web Worker), and an
   **⚡ Open in StackBlitz** button on Node-only examples to run the real thing (servers, `fs`,
   `npm`) in a Node sandbox.
@@ -49,12 +53,14 @@ npx serve .
   an **"On this page"** mini-TOC with scroll-spy, and a per-lesson **reading-progress bar**.
 - A **settings panel** (gear icon): adjust reading text size, export/import/reset your progress.
 - A searchable **Glossary** (107 terms), **API cheat-sheets** for 16 core modules (166 APIs), and a
-  printable **completion certificate** with per-module "mastered" badges — all reachable from the
-  home page and the command palette.
+  **completion certificate** (print to PDF or **download as PNG**) with per-module "mastered"
+  badges — all reachable from the home page and the command palette.
+- A **spaced-repetition Review mode** (`#/review`) that resurfaces quiz questions you've missed on
+  an expanding schedule (10 min → 1 day → 3 days → 1 week → 3 weeks → 2 months).
 - **Next / Previous** navigation (or use the ← / → arrow keys), a collapsible sidebar,
   light/dark themes (`t` to toggle), and **automatic progress tracking** saved in your browser.
 
-**All 41 modules (136 lessons) are authored in full depth** — every lesson has narrated
+**All 51 modules (169 lessons) are authored in full depth** — every lesson has narrated
 prose, runnable editors, exercises with reveal-able solutions, and a hands-on project, from
 absolute beginner through distinguished-principal-engineer topics.
 

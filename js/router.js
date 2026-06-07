@@ -319,6 +319,7 @@
     if (parts[0] === "glossary" && window.Reference) { renderCustom(window.Reference.glossaryPage(), "Glossary"); return; }
     if (parts[0] === "cheatsheets" && window.Reference) { renderCustom(window.Reference.cheatsheetPage(parts[1]), "Cheat-sheets"); return; }
     if (parts[0] === "certificate" && window.Certificate) { renderCustom(window.Certificate.page(), "Certificate"); return; }
+    if (parts[0] === "review" && window.Review) { renderCustom(window.Review.page(), "Review"); return; }
 
     var entry = window.COURSE.flat.find(function (l) {
       return l.moduleId === parts[0] && l.id === parts[1];

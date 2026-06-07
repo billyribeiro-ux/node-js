@@ -15,6 +15,54 @@
   window.registerQuiz = function (lessonId, questions) { QUIZ[lessonId] = questions; };
   window.registerResources = function (lessonId, links) { RES[lessonId] = links; };
 
+  /* ---------- spaced-repetition (SM-2-lite) ---------- */
+  var SR_KEY = "ultimate-node-course:sr";
+  // Intervals (ms) by streak length. Wrong answers reset to the short end.
+  var INTERVALS = [10 * 60e3, 24 * 3600e3, 3 * 24 * 3600e3, 7 * 24 * 3600e3, 21 * 24 * 3600e3, 60 * 24 * 3600e3];
+
+  function loadSR() { try { return JSON.parse(localStorage.getItem(SR_KEY) || "{}"); } catch (e) { return {}; } }
+  function saveSR(s) { try { localStorage.setItem(SR_KEY, JSON.stringify(s)); } catch (e) {} }
+  function qKey(lessonId, qi) { return lessonId + "#" + qi; }
+
+  function recordResult(lessonId, qi, correct) {
+    var sr = loadSR();
+    var k = qKey(lessonId, qi);
+    var cur = sr[k] || { streak: 0, lapses: 0, seen: 0 };
+    cur.seen++;
+    if (correct) cur.streak = Math.min(cur.streak + 1, INTERVALS.length - 1);
+    else { cur.streak = 0; cur.lapses++; }
+    cur.last = Date.now();
+    cur.due = Date.now() + INTERVALS[correct ? cur.streak : 0];
+    cur.lastCorrect = correct;
+    sr[k] = cur;
+    saveSR(sr);
+  }
+
+  // Questions due for review: never-correct or past their due time. Returns
+  // [{ lessonId, moduleId, qi, q }] sorted by urgency (lapsed/overdue first).
+  function dueQuestions(now) {
+    now = now || Date.now();
+    var sr = loadSR();
+    var out = [];
+    Object.keys(QUIZ).forEach(function (lessonId) {
+      var lesson = window.COURSE && window.COURSE.flat.find(function (l) { return l.id === lessonId; });
+      QUIZ[lessonId].forEach(function (q, qi) {
+        var st = sr[qKey(lessonId, qi)];
+        var due = !st || !st.lastCorrect || (st.due && st.due <= now);
+        if (due) out.push({ lessonId: lessonId, moduleId: lesson ? lesson.moduleId : null, qi: qi, q: q,
+          urgency: st ? (st.lastCorrect ? (now - st.due) : 1e12 + (now - (st.last || 0))) : 5e11 });
+      });
+    });
+    out.sort(function (a, b) { return b.urgency - a.urgency; });
+    return out;
+  }
+
+  // Load every module's quiz file (used by the review page).
+  function loadAll() {
+    if (!window.COURSE) return Promise.resolve();
+    return Promise.all(window.COURSE.modules.map(function (m) { return loadModule(m.id); }));
+  }
+
   function loadModule(moduleId) {
     if (loadedModules[moduleId]) return Promise.resolve();
     if (pendingModule[moduleId]) return pendingModule[moduleId];
@@ -71,6 +119,7 @@
           if (locked) return;
           locked = true;
           var isCorrect = oi === q.answer;
+          recordResult(lessonId, qi, isCorrect); // feed spaced-repetition
           if (isCorrect) state.correct++;
           state.answered++;
           // mark all options
@@ -126,7 +175,11 @@
         renderResources(host, lessonId);
       });
     },
-    hasQuiz: function (lessonId) { return !!(QUIZ[lessonId] && QUIZ[lessonId].length); }
+    hasQuiz: function (lessonId) { return !!(QUIZ[lessonId] && QUIZ[lessonId].length); },
+    getQuestions: function (lessonId) { return QUIZ[lessonId] || []; },
+    loadAll: loadAll,
+    dueQuestions: dueQuestions,
+    recordResult: recordResult
   };
 
   window.Extras = Extras;

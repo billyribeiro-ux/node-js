@@ -654,3 +654,28 @@ figure.diagram figcaption { font-size: 13px; color: var(--text-muted); margin-to
   .certificate { border-color: #2f9c42; box-shadow: none; }
   body.printing-cert .certificate.locked { opacity: 1; filter: none; }
 }
+
+/* =========================================================================
+   REVIEW MODE + diagram polish
+   ========================================================================= */
+.review-progress { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+.review-score { color: var(--accent); font-weight: 600; }
+.review-bar { height: 6px; background: var(--bg-inset); border-radius: 999px; overflow: hidden; margin-bottom: var(--space-5); }
+.review-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-strong)); transition: width .2s ease; }
+.review-q { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-5); }
+.review-q .quiz-q-text { font-size: 1.1rem; }
+.review-next { margin-top: var(--space-4); }
+.review-from { margin-top: var(--space-3); font-size: 13px; color: var(--text-faint); }
+.review-caught { font-size: 1.05rem; padding: var(--space-5); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius); background: var(--bg-elevated); }
+.review-summary { text-align: center; padding: var(--space-6) 0; }
+.review-big { font-size: 3rem; font-weight: 800; color: var(--accent); }
+.review-actions { display: flex; gap: var(--space-3); justify-content: center; margin-top: var(--space-4); }
+
+/* diagram polish: present each diagram on a subtle card */
+figure.diagram {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-4) var(--space-3);
+}
+figure.diagram svg { display: block; margin: 0 auto; }
