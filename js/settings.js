@@ -42,11 +42,17 @@
         '<button class="icon-btn" id="settings-close" aria-label="Close settings">✕</button></div>' +
 
       '<div class="settings-group">' +
-        "<label>Theme</label>" +
+        "<label>" + (window.I18n ? window.I18n.t("set_theme") : "Theme") + "</label>" +
         '<div class="settings-row">' +
           '<button class="seg" data-theme-set="light">Light</button>' +
           '<button class="seg" data-theme-set="dark">Dark</button>' +
         "</div>" +
+      "</div>" +
+
+      '<div class="settings-group">' +
+        "<label>" + (window.I18n ? window.I18n.t("set_language") : "Language") + "</label>" +
+        '<select id="lang-select" class="lang-select"></select>' +
+        '<p class="settings-hint">UI is fully translated; lessons show in your language where a translation exists, otherwise English.</p>' +
       "</div>" +
 
       '<div class="settings-group">' +
@@ -79,6 +85,17 @@
     panel.querySelectorAll("[data-theme-set]").forEach(function (b) {
       b.addEventListener("click", function () { window.Theme.set(b.dataset.themeSet); syncTheme(); });
     });
+
+    var langSel = panel.querySelector("#lang-select");
+    if (langSel && window.I18n) {
+      Object.keys(window.I18n.locales).forEach(function (code) {
+        var o = document.createElement("option");
+        o.value = code; o.textContent = window.I18n.locales[code];
+        if (code === window.I18n.get()) o.selected = true;
+        langSel.appendChild(o);
+      });
+      langSel.addEventListener("change", function () { window.I18n.set(langSel.value); });
+    }
 
     var range = panel.querySelector("#font-scale");
     var rangeVal = panel.querySelector("#font-scale-val");

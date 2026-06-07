@@ -44,6 +44,9 @@
     });
     updateOverall();
 
+    // Re-render the current view when the language changes.
+    if (window.I18n) window.I18n.onChange(function () { if (window.Router) window.Router.refresh(); });
+
     // Go
     window.Router.start();
   }

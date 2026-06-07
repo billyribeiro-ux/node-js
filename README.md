@@ -57,6 +57,13 @@ npx serve .
   badges — all reachable from the home page and the command palette.
 - A **spaced-repetition Review mode** (`#/review`) that resurfaces quiz questions you've missed on
   an expanding schedule (10 min → 1 day → 3 days → 1 week → 3 weeks → 2 months).
+- A **skills-radar progress dashboard** (`#/progress`) — an SVG radar of your mastery per tier,
+  blending lessons completed with quiz accuracy, plus strongest/focus areas.
+- **Printable per-tier study guides** (`#/guide`) — condensed revision sheets built from every
+  lesson's objectives and key takeaways.
+- **Localization (i18n):** the UI is translated into **English, Spanish, and Portuguese** (switch
+  in Settings); lessons display in your language where a translation exists and fall back to
+  English otherwise.
 - **Next / Previous** navigation (or use the ← / → arrow keys), a collapsible sidebar,
   light/dark themes (`t` to toggle), and **automatic progress tracking** saved in your browser.
 

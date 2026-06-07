@@ -18,6 +18,8 @@
     });
     // Appendix pages.
     idx.push({ title: "Review (spaced repetition)", subtitle: "Practice", kind: "page", hash: "#/review" });
+    idx.push({ title: "Progress — skills radar", subtitle: "Dashboard", kind: "page", hash: "#/progress" });
+    idx.push({ title: "Study guides (printable)", subtitle: "Reference", kind: "page", hash: "#/guide" });
     idx.push({ title: "Glossary", subtitle: "Reference", kind: "page", hash: "#/glossary" });
     idx.push({ title: "API Cheat-sheets", subtitle: "Reference", kind: "page", hash: "#/cheatsheets" });
     idx.push({ title: "Completion Certificate", subtitle: "Your progress", kind: "page", hash: "#/certificate" });

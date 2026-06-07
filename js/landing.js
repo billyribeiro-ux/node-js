@@ -68,15 +68,18 @@
     var mastered = window.Certificate ? window.Certificate.masteredCount() : 0;
     var ref = document.createElement("div");
     ref.className = "ref-band";
+    var T = window.I18n ? function (k) { return window.I18n.t(k); } : function (k) { return k; };
+    function card(href, icon, title, sub) {
+      return '<a class="ref-card" href="' + href + '"><span class="ref-icon">' + icon + "</span><div><strong>" +
+        title + "</strong><span>" + sub + "</span></div></a>";
+    }
     ref.innerHTML =
-      '<a class="ref-card" href="#/review"><span class="ref-icon">🔁</span><div><strong>Review</strong>' +
-        "<span>Spaced-repetition flashcards</span></div></a>" +
-      '<a class="ref-card" href="#/glossary"><span class="ref-icon">📖</span><div><strong>Glossary</strong>' +
-        "<span>Every key term, defined</span></div></a>" +
-      '<a class="ref-card" href="#/cheatsheets"><span class="ref-icon">⚡</span><div><strong>API Cheat-sheets</strong>' +
-        "<span>Quick reference for core modules</span></div></a>" +
-      '<a class="ref-card" href="#/certificate"><span class="ref-icon">🏆</span><div><strong>Certificate</strong>' +
-        "<span>" + mastered + " / " + window.COURSE.modules.length + " modules mastered</span></div></a>";
+      card("#/review", "🔁", T("ref_review"), T("ref_review_sub")) +
+      card("#/progress", "📊", T("ref_radar"), T("ref_radar_sub")) +
+      card("#/guide", "🗂️", T("ref_guides"), T("ref_guides_sub")) +
+      card("#/glossary", "📖", T("ref_glossary"), T("ref_glossary_sub")) +
+      card("#/cheatsheets", "⚡", T("ref_cheats"), T("ref_cheats_sub")) +
+      card("#/certificate", "🏆", T("ref_cert"), mastered + " / " + window.COURSE.modules.length + " modules mastered");
     wrap.appendChild(ref);
 
     // group modules by tier

@@ -27,15 +27,33 @@
   function recordResult(lessonId, qi, correct) {
     var sr = loadSR();
     var k = qKey(lessonId, qi);
-    var cur = sr[k] || { streak: 0, lapses: 0, seen: 0 };
+    var cur = sr[k] || { streak: 0, lapses: 0, seen: 0, attempts: 0, correctCount: 0 };
     cur.seen++;
-    if (correct) cur.streak = Math.min(cur.streak + 1, INTERVALS.length - 1);
+    cur.attempts = (cur.attempts || 0) + 1;
+    if (correct) { cur.streak = Math.min(cur.streak + 1, INTERVALS.length - 1); cur.correctCount = (cur.correctCount || 0) + 1; }
     else { cur.streak = 0; cur.lapses++; }
     cur.last = Date.now();
     cur.due = Date.now() + INTERVALS[correct ? cur.streak : 0];
     cur.lastCorrect = correct;
     sr[k] = cur;
     saveSR(sr);
+  }
+
+  // Aggregate quiz performance per lesson (from the SR store). Returns a map
+  // lessonId -> { questions, attempted, attempts, correct } for loaded modules.
+  function quizStatsByLesson() {
+    var sr = loadSR();
+    var out = {};
+    Object.keys(QUIZ).forEach(function (lessonId) {
+      var qs = QUIZ[lessonId];
+      var stat = { questions: qs.length, attempted: 0, attempts: 0, correct: 0 };
+      qs.forEach(function (q, qi) {
+        var st = sr[qKey(lessonId, qi)];
+        if (st) { stat.attempted++; stat.attempts += (st.attempts || 0); stat.correct += (st.correctCount || 0); }
+      });
+      out[lessonId] = stat;
+    });
+    return out;
   }
 
   // Questions due for review: never-correct or past their due time. Returns
@@ -93,7 +111,8 @@
     var section = document.createElement("section");
     section.className = "quiz";
     var prev = savedScore(lessonId);
-    section.innerHTML = '<h2 class="quiz-heading">📝 Knowledge check' +
+    var T = window.I18n ? function (k) { return window.I18n.t(k); } : function (k) { return k; };
+    section.innerHTML = '<h2 class="quiz-heading">' + T("quiz_heading") +
       (prev ? ' <span class="quiz-prev">last score: ' + prev.correct + "/" + prev.total + "</span>" : "") +
       "</h2>";
 
@@ -136,7 +155,7 @@
           card.appendChild(exp);
           if (state.answered === state.total) {
             saveScore(lessonId, state.correct, state.total);
-            tally.textContent = "You scored " + state.correct + " / " + state.total;
+            tally.textContent = T("quiz_scored") + " " + state.correct + " / " + state.total;
             tally.classList.add("done");
             if (state.correct === state.total) tally.classList.add("perfect");
           }
@@ -149,7 +168,7 @@
 
     var tally = document.createElement("div");
     tally.className = "quiz-tally";
-    tally.textContent = "Answer all " + state.total + " questions to see your score.";
+    tally.textContent = T("quiz_answer_all");
     section.appendChild(tally);
 
     host.appendChild(section);
@@ -164,7 +183,8 @@
       return '<li><a href="' + l.url + '" target="_blank" rel="noopener">' + l.title +
         '<span class="res-ext">↗</span></a></li>';
     }).join("");
-    box.innerHTML = '<h2 class="resources-heading">📚 Further reading</h2><ul class="res-list">' + items + "</ul>";
+    var T2 = window.I18n ? function (k) { return window.I18n.t(k); } : function (k) { return k; };
+    box.innerHTML = '<h2 class="resources-heading">' + T2("res_heading") + '</h2><ul class="res-list">' + items + "</ul>";
     host.appendChild(box);
   }
 
@@ -179,7 +199,8 @@
     getQuestions: function (lessonId) { return QUIZ[lessonId] || []; },
     loadAll: loadAll,
     dueQuestions: dueQuestions,
-    recordResult: recordResult
+    recordResult: recordResult,
+    quizStatsByLesson: quizStatsByLesson
   };
 
   window.Extras = Extras;

@@ -320,6 +320,11 @@
     if (parts[0] === "cheatsheets" && window.Reference) { renderCustom(window.Reference.cheatsheetPage(parts[1]), "Cheat-sheets"); return; }
     if (parts[0] === "certificate" && window.Certificate) { renderCustom(window.Certificate.page(), "Certificate"); return; }
     if (parts[0] === "review" && window.Review) { renderCustom(window.Review.page(), "Review"); return; }
+    if (parts[0] === "progress" && window.Analytics) { renderCustom(window.Analytics.page(), "Progress"); return; }
+    if (parts[0] === "guide" && window.Guide) {
+      renderCustom(parts[1] != null ? window.Guide.tierPage(Number(parts[1])) : window.Guide.indexPage(), "Study guide");
+      return;
+    }
 
     var entry = window.COURSE.flat.find(function (l) {
       return l.moduleId === parts[0] && l.id === parts[1];
@@ -339,7 +344,15 @@
     if (entry.status === "stub") { renderStub(entry); return; }
 
     setContent('<div class="loading-splash">Loading lesson…</div>');
-    loadLesson(entry).then(function (md) { renderLesson(entry, md); })
+    loadLesson(entry).then(function (md) {
+      // Prefer a localized version of the lesson when one exists for the locale.
+      if (window.I18n && window.I18n.get() !== "en") {
+        return window.I18n.loadModule(entry.moduleId).then(function () {
+          renderLesson(entry, window.I18n.lessonMarkdown(entry.id) || md);
+        });
+      }
+      renderLesson(entry, md);
+    })
       .catch(function (err) {
         setContent('<article class="lesson"><h1>Could not load this lesson</h1><p>' +
           window.MD.escapeHtml(err.message) + "</p><p><a href='#/'>Back home</a></p></article>");
@@ -352,6 +365,10 @@
       handle();
     },
     refresh: function () { handle(); },
-    currentLesson: function () { return current; }
+    currentLesson: function () { return current; },
+    fetchMarkdown: function (entry) {
+      if (!entry || entry.status === "stub") return Promise.resolve("");
+      return loadLesson(entry);
+    }
   };
 })();

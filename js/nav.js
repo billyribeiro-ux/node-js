@@ -16,28 +16,29 @@
     var prev = flat[idx - 1];
     var next = flat[idx + 1];
     var done = window.Progress && window.Progress.isComplete(lessonId);
+    var T = window.I18n ? function (k) { return window.I18n.t(k); } : function (k) { return k; };
 
     var html = '<div class="complete-bar">' +
       '<button class="btn btn-complete' + (done ? " done" : "") + '" data-complete="' + lessonId + '">' +
-      (done ? "✓ Completed — click to unmark" : "Mark complete & continue →") +
+      (done ? T("nav_done") : T("nav_mark")) +
       "</button></div>";
 
     html += '<nav class="lesson-nav" aria-label="Lesson navigation">';
     if (prev) {
       html += '<a class="nav-card prev" href="' + lessonHref(prev) + '">' +
-        '<span class="nav-dir">← Previous</span>' +
+        '<span class="nav-dir">← ' + T("nav_prev") + "</span>" +
         '<span class="nav-title">' + prev.title + "</span></a>";
     } else {
       html += '<a class="nav-card prev disabled" aria-disabled="true">' +
-        '<span class="nav-dir">← Previous</span><span class="nav-title">You\'re at the start</span></a>';
+        '<span class="nav-dir">← ' + T("nav_prev") + '</span><span class="nav-title">' + T("nav_start") + "</span></a>";
     }
     if (next) {
       html += '<a class="nav-card next" href="' + lessonHref(next) + '">' +
-        '<span class="nav-dir">Next →</span>' +
+        '<span class="nav-dir">' + T("nav_next") + ' →</span>' +
         '<span class="nav-title">' + next.title + "</span></a>";
     } else {
       html += '<a class="nav-card next disabled" aria-disabled="true">' +
-        '<span class="nav-dir">Next →</span><span class="nav-title">🎉 End of course</span></a>';
+        '<span class="nav-dir">' + T("nav_next") + ' →</span><span class="nav-title">' + T("nav_end") + "</span></a>";
     }
     html += "</nav>";
     return html;
