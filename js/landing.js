@@ -17,12 +17,14 @@
     card.className = "module-card";
     card.href = "#/" + mod.id + "/" + (first ? first.id : "");
     var done = mod.lessons.filter(function (l) { return window.Progress && window.Progress.isComplete(l.id); }).length;
+    var mastered = window.Certificate && window.Certificate.moduleMastered(mod.id);
+    if (mastered) card.classList.add("mastered");
     card.innerHTML =
       '<div class="mc-head"><span class="mc-num">' + mod.code + "</span>" + ring(pct) + "</div>" +
       "<h3>" + mod.shortTitle + "</h3>" +
       "<p>" + mod.summary + "</p>" +
       '<div class="mc-foot"><span>' + mod.lessons.length + " lessons</span>" +
-      "<span>" + done + " done</span></div>";
+      (mastered ? '<span class="mc-badge">✓ Mastered</span>' : "<span>" + done + " done</span>") + "</div>";
     return card;
   }
 
@@ -61,6 +63,19 @@
       stat("0 → L7+", "Skill range") +
       stat(doneCount, "You've finished");
     wrap.appendChild(stats);
+
+    // reference + certificate band
+    var mastered = window.Certificate ? window.Certificate.masteredCount() : 0;
+    var ref = document.createElement("div");
+    ref.className = "ref-band";
+    ref.innerHTML =
+      '<a class="ref-card" href="#/glossary"><span class="ref-icon">📖</span><div><strong>Glossary</strong>' +
+        "<span>Every key term, defined</span></div></a>" +
+      '<a class="ref-card" href="#/cheatsheets"><span class="ref-icon">⚡</span><div><strong>API Cheat-sheets</strong>' +
+        "<span>Quick reference for core modules</span></div></a>" +
+      '<a class="ref-card" href="#/certificate"><span class="ref-icon">🏆</span><div><strong>Certificate</strong>' +
+        "<span>" + mastered + " / " + window.COURSE.modules.length + " modules mastered</span></div></a>";
+    wrap.appendChild(ref);
 
     // group modules by tier
     var tiers = [];

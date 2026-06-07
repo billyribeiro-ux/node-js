@@ -16,6 +16,8 @@ objectives:
 
 You have probably heard "avoid adding properties to objects dynamically" without ever understanding why. The reason is rooted in V8's object model: every object carries a **hidden class** that describes its shape, and every property access site carries an **inline cache** that bets on the shapes it has seen. Break that bet and V8 has to work much harder — sometimes orders of magnitude harder — for every single property read or write in a hot path.
 
+@diagram:hidden-classes
+
 ## Learning objectives
 
 - Describe what a hidden class (also called a *shape* or *map*) is and how V8 builds a transition tree.

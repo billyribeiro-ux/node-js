@@ -16,6 +16,8 @@ objectives:
 
 Shipping "works on my machine" is a joke until containers make it literal. A Docker container packages your Node app, its runtime, and every system dependency into a single immutable artifact that runs identically in development, CI, staging, and production. Understanding multi-stage builds and lean base images is the difference between a 1.2 GB image that ships every `node_modules` dev tool and a 90 MB image that is faster to pull, has a smaller attack surface, and starts in milliseconds.
 
+@diagram:container-layers
+
 ## Learning objectives
 
 - Explain what a container image and layer are.

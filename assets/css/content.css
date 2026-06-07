@@ -566,3 +566,91 @@ figure.diagram figcaption { font-size: 13px; color: var(--text-muted); margin-to
 .hero-cta { animation: fadeUp .6s ease both; }
 .module-card { animation: fadeUp .4s ease both; }
 .hero-stat .num { background: linear-gradient(90deg, var(--accent), var(--accent-strong)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* =========================================================================
+   REFERENCE: landing band, palette kinds, glossary, cheat-sheets, certificate
+   ========================================================================= */
+
+/* ---- landing reference band ---- */
+.ref-band { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3); margin: var(--space-6) 0; }
+.ref-card { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-elevated); color: var(--text); }
+.ref-card:hover { border-color: var(--accent); text-decoration: none; transform: translateY(-2px); box-shadow: var(--shadow-1); }
+.ref-card .ref-icon { font-size: 26px; }
+.ref-card strong { display: block; font-size: 15px; }
+.ref-card span { font-size: 12.5px; color: var(--text-muted); }
+
+/* ---- module mastery badge ---- */
+.module-card.mastered { border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); }
+.mc-badge { color: var(--accent); font-weight: 700; }
+
+/* ---- palette kind badges ---- */
+.palette-item { flex-direction: row !important; align-items: center; gap: 10px; }
+.palette-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.palette-kind { font-size: 9px; text-transform: uppercase; letter-spacing: .04em; font-weight: 700; padding: 2px 6px; border-radius: 5px; background: var(--bg-inset); color: var(--text-faint); border: 1px solid var(--border); flex-shrink: 0; width: 54px; text-align: center; }
+.palette-kind-lesson { color: var(--accent); }
+.palette-kind-term { color: var(--callout-note); }
+.palette-kind-sheet { color: var(--callout-principal); }
+.palette-kind-page { color: var(--callout-warn); }
+.palette-meta { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---- reference pages (glossary + cheat-sheets) ---- */
+.reference-page .ref-filter {
+  width: 100%; padding: 10px 14px; margin: 0 0 var(--space-5);
+  border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  background: var(--bg-inset); color: var(--text); font-size: 15px; font-family: inherit;
+}
+.reference-page .ref-filter:focus { outline: none; border-color: var(--accent); }
+.ref-empty { color: var(--text-faint); }
+
+.glossary-list { display: grid; gap: 2px; }
+.glossary-item { display: grid; grid-template-columns: 220px 1fr; gap: var(--space-4); padding: var(--space-3) 0; border-bottom: 1px solid var(--border); }
+.glossary-item dt { font-weight: 700; color: var(--text); margin: 0; }
+.glossary-item dd { margin: 0; color: var(--text-muted); font-size: 14.5px; }
+.ref-lesson { font-size: 12.5px; white-space: nowrap; }
+@media (max-width: 640px) { .glossary-item { grid-template-columns: 1fr; gap: 2px; } }
+
+.cheats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-3); }
+.cheat-card { display: block; padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-elevated); color: var(--text); }
+.cheat-card:hover { border-color: var(--accent); text-decoration: none; transform: translateY(-2px); }
+.cheat-card h3 { margin: 0 0 6px; font-size: 1rem; }
+.cheat-card p { margin: 0 0 8px; font-size: 13px; color: var(--text-muted); }
+.cheat-count { font-size: 11px; color: var(--accent); font-weight: 700; }
+.cheat-table { width: 100%; border-collapse: collapse; margin: 0 0 1.4em; font-size: 13.5px; }
+.cheat-table td { border: 1px solid var(--border); padding: 8px 12px; vertical-align: top; }
+.cheat-table td:first-child { width: 45%; }
+.cheat-table code { white-space: nowrap; }
+.cheat-lessonlink { font-size: 13px; color: var(--text-muted); }
+
+/* ---- certificate ---- */
+.cert-status { font-size: 15px; }
+.cert-status.done { color: var(--accent); font-weight: 600; }
+.cert-namerow { display: flex; align-items: center; gap: 12px; margin: var(--space-4) 0; flex-wrap: wrap; }
+.cert-namerow input { flex: 1; min-width: 200px; padding: 9px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg-inset); color: var(--text); font-size: 15px; }
+.certificate {
+  margin: var(--space-5) auto; max-width: 760px;
+  border: 2px solid var(--accent); border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, var(--bg-elevated), var(--bg));
+  padding: 6px;
+}
+.certificate.locked { opacity: .65; filter: grayscale(.3); }
+.cert-inner { border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-7) var(--space-6); text-align: center; }
+.cert-seal { font-size: 46px; }
+.cert-kicker { text-transform: uppercase; letter-spacing: .25em; font-size: 12px; color: var(--text-faint); margin-top: var(--space-3); }
+.cert-course { font-size: 1.9rem; font-weight: 800; margin: var(--space-2) 0 2px; letter-spacing: -.02em; }
+.cert-sub { color: var(--accent); font-weight: 600; }
+.cert-awarded { margin-top: var(--space-5); color: var(--text-muted); font-size: 14px; }
+.cert-name { font-size: 2rem; font-weight: 700; margin: 6px 0; border-bottom: 1px solid var(--border); display: inline-block; padding: 0 var(--space-5) 6px; }
+.cert-desc { max-width: 52ch; margin: var(--space-3) auto 0; color: var(--text-muted); font-size: 14px; }
+.cert-foot { display: flex; align-items: center; gap: var(--space-3); justify-content: center; margin-top: var(--space-6); font-size: 12.5px; color: var(--text-faint); }
+.cert-foot .cert-line { width: 60px; height: 1px; background: var(--border-strong); }
+.cert-actions { display: flex; gap: var(--space-3); justify-content: center; margin-top: var(--space-5); }
+
+/* print: show only the certificate */
+@media print {
+  .app-header, #reading-progress, .sidebar, .lesson-breadcrumb, .cert-status, .cert-namerow,
+  .cert-actions, .minitoc, .sidebar-scrim { display: none !important; }
+  .app-shell { display: block; }
+  .content { padding: 0; }
+  .certificate { border-color: #2f9c42; box-shadow: none; }
+  body.printing-cert .certificate.locked { opacity: 1; filter: none; }
+}

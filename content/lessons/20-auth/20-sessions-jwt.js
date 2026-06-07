@@ -17,6 +17,8 @@ objectives:
 
 Once a user proves their identity with a password, the server must remember that fact across every subsequent HTTP request — HTTP itself is stateless. The choice between server-side sessions and signed JWTs has real consequences for scalability, revocability, and attack surface. Get the cookie flags wrong and you hand attackers a read-on-XSS or free-on-CSRF. This lesson gives you the full picture.
 
+@diagram:jwt-structure
+
 ## Learning objectives
 
 - Explain **stateful sessions** and **stateless JWTs** and the trade-offs of each.

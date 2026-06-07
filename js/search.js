@@ -11,16 +11,30 @@
 
   function buildIndex() {
     if (!window.COURSE) return [];
-    return window.COURSE.flat.map(function (l) {
+    var idx = window.COURSE.flat.map(function (l) {
       var mod = window.COURSE.byModule[l.moduleId];
-      return {
-        id: l.id, moduleId: l.moduleId,
-        title: l.title,
-        module: mod.title,
-        tier: mod.tier,
-        hay: (l.title + " " + mod.title + " " + mod.tier).toLowerCase()
-      };
+      return { title: l.title, subtitle: mod.title, kind: "lesson",
+               hash: "#/" + l.moduleId + "/" + l.id };
     });
+    // Appendix pages.
+    idx.push({ title: "Glossary", subtitle: "Reference", kind: "page", hash: "#/glossary" });
+    idx.push({ title: "API Cheat-sheets", subtitle: "Reference", kind: "page", hash: "#/cheatsheets" });
+    idx.push({ title: "Completion Certificate", subtitle: "Your progress", kind: "page", hash: "#/certificate" });
+    // Glossary terms + cheat-sheets (present once Reference data is loaded).
+    if (window.Reference) {
+      window.Reference.glossaryTerms().forEach(function (t) {
+        idx.push({ title: t.term, subtitle: "Glossary · " + (t.def || "").slice(0, 60), kind: "term",
+                   hash: t.lesson ? "#/" + lessonHash(t.lesson) : "#/glossary" });
+      });
+      window.Reference.cheatsheets().forEach(function (c) {
+        idx.push({ title: c.title, subtitle: "Cheat-sheet", kind: "sheet", hash: "#/cheatsheets/" + c.id });
+      });
+    }
+    return idx;
+  }
+  function lessonHash(id) {
+    var l = window.COURSE.flat.find(function (x) { return x.id === id; });
+    return l ? l.moduleId + "/" + l.id : "glossary";
   }
 
   // Lightweight fuzzy: every query char must appear in order; score rewards
@@ -57,8 +71,9 @@
       var li = document.createElement("li");
       li.className = "palette-item" + (idx === active ? " active" : "");
       li.innerHTML =
-        '<span class="palette-title">' + highlight(entry.title, entry._hits) + "</span>" +
-        '<span class="palette-meta">' + entry.module + "</span>";
+        '<span class="palette-kind palette-kind-' + entry.kind + '">' + entry.kind + "</span>" +
+        '<span class="palette-text"><span class="palette-title">' + highlight(entry.title, entry._hits) + "</span>" +
+        '<span class="palette-meta">' + escapeHtml(entry.subtitle || "") + "</span></span>";
       li.addEventListener("click", function () { go(entry); });
       li.addEventListener("mousemove", function () { setActive(idx); });
       list.appendChild(li);
@@ -81,7 +96,7 @@
     var q = input.value.trim();
     var scored = [];
     items.forEach(function (it) {
-      var m = fuzzy(q, it.title) || fuzzy(q, it.module);
+      var m = fuzzy(q, it.title) || fuzzy(q, it.subtitle || "");
       if (q === "") { scored.push({ entry: it, score: 0, hits: [] }); }
       else if (m) { scored.push({ entry: it, score: m.score, hits: m.hits }); }
     });
@@ -100,7 +115,7 @@
     if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" });
   }
 
-  function go(entry) { close(); location.hash = "#/" + entry.moduleId + "/" + entry.id; }
+  function go(entry) { close(); location.hash = entry.hash; }
 
   function open() {
     if (!overlay) build();
@@ -110,6 +125,10 @@
     input.value = "";
     update();
     setTimeout(function () { input.focus(); }, 0);
+    // Pull in glossary + cheat-sheet entries, then refresh the index.
+    if (window.Reference) {
+      window.Reference.load().then(function () { items = buildIndex(); update(); });
+    }
   }
   function close() {
     if (overlay) { overlay.hidden = true; document.body.classList.remove("palette-open"); }

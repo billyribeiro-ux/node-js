@@ -17,6 +17,8 @@ objectives:
 
 Spawning a new worker thread for every task works for a handful of tasks, but breaks down at scale: each `new Worker()` takes 5–20 ms and allocates megabytes of V8 heap. A web server receiving 1000 image-processing requests per second can't afford that overhead. A **worker pool** keeps a fixed set of warm threads alive, routes tasks to idle ones, queues the overflow, and recycles threads when they finish — the same pattern used by every high-throughput data pipeline, task runner, and compute cluster. Building one from scratch teaches you the exact patterns you'll find inside `piscina`, `workerpool`, and similar libraries.
 
+@diagram:worker-pool
+
 ## Learning objectives
 
 - Justify the pool pattern over per-task thread spawning.

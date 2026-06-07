@@ -158,6 +158,80 @@
       '<text x="350" y="35" text-anchor="middle" font-size="10" fill="' + G + '">probe succeeds → close</text>')
   };
 
-  // newline support inside <text>
+  // ---- JWT structure ----
+  D["jwt-structure"] = {
+    title: "A JWT is three base64url parts joined by dots: header.payload.signature",
+    svg: svg("740 200",
+      box(30, 70, 200, 56, "Header\\n{ alg, typ }", "rgba(47,129,247,0.14)") +
+      box(270, 70, 200, 56, "Payload\\n{ sub, exp, … }", "rgba(63,174,80,0.14)") +
+      box(510, 70, 200, 56, "Signature\\nHMAC/RSA", "rgba(163,113,247,0.14)") +
+      '<text x="250" y="103" text-anchor="middle" font-size="22" fill="currentColor">.</text>' +
+      '<text x="490" y="103" text-anchor="middle" font-size="22" fill="currentColor">.</text>' +
+      '<text x="370" y="170" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">the signature is verified with a secret/key — tamper with any part and it fails</text>')
+  };
+
+  // ---- Worker pool ----
+  D["worker-pool"] = {
+    title: "A worker pool reuses a fixed set of threads, fed by a task queue",
+    svg: svg("720 250",
+      box(30, 95, 150, 48, "task queue", "rgba(63,174,80,0.10)") +
+      box(280, 30, 150, 44, "Worker A") +
+      box(280, 100, 150, 44, "Worker B") +
+      box(280, 170, 150, 44, "Worker C") +
+      box(540, 95, 150, 48, "results") +
+      arrow(180, 110, 280, 52) + arrow(180, 119, 280, 122) + arrow(180, 128, 280, 192) +
+      arrow(430, 52, 540, 110) + arrow(430, 122, 540, 119) + arrow(430, 192, 540, 128) +
+      '<text x="360" y="240" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">idle workers pull the next task — no costly thread-per-task spin-up</text>')
+  };
+
+  // ---- Pub/Sub fan-out across nodes ----
+  D["pubsub-fanout"] = {
+    title: "A shared pub/sub bus lets users on different servers reach each other",
+    svg: svg("720 250",
+      box(280, 30, 160, 46, "Redis Pub/Sub", "rgba(63,174,80,0.14)") +
+      box(40, 150, 150, 46, "Server A") +
+      box(285, 150, 150, 46, "Server B") +
+      box(530, 150, 150, 46, "Server C") +
+      arrow(330, 150, 350, 76) + arrow(360, 76, 360, 150, "#888") +
+      arrow(190, 165, 285, 76) + arrow(640, 165, 440, 76) +
+      '<text x="360" y="235" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">each server publishes events; every server receives them and pushes to its own sockets</text>')
+  };
+
+  // ---- Saga (compensating transactions) ----
+  D["saga"] = {
+    title: "A saga runs local steps; on failure it runs compensations in reverse",
+    svg: svg("740 210",
+      box(30, 40, 130, 46, "Order", "rgba(63,174,80,0.12)") +
+      box(210, 40, 130, 46, "Payment", "rgba(63,174,80,0.12)") +
+      box(390, 40, 130, 46, "Shipping", "rgba(248,81,73,0.14)") +
+      arrow(160, 63, 210, 63) + arrow(340, 63, 390, 63) +
+      '<text x="455" y="110" text-anchor="middle" font-size="11" fill="#f85149">fails ✗</text>' +
+      '<path d="M390 86 C 300 150, 200 150, 95 88" fill="none" stroke="#d29922" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowhead)"/>' +
+      '<text x="250" y="175" text-anchor="middle" font-size="12" fill="#d29922">compensate: refund payment, cancel order (undo in reverse)</text>')
+  };
+
+  // ---- Docker multi-stage layers ----
+  D["container-layers"] = {
+    title: "Multi-stage builds keep heavy build tools out of the final image",
+    svg: svg("720 220",
+      box(40, 40, 280, 140, "BUILD STAGE\\n(full toolchain, devDeps,\\ncompile/bundle)", "rgba(210,153,34,0.12)") +
+      box(400, 70, 280, 90, "RUNTIME STAGE\\n(distroless, prod deps,\\njust the built output)", "rgba(63,174,80,0.14)") +
+      '<path d="M320 110 L 400 110" stroke="' + G + '" stroke-width="2" marker-end="url(#arrowhead)"/>' +
+      '<text x="360" y="100" text-anchor="middle" font-size="11" fill="currentColor">COPY artifacts</text>' +
+      '<text x="540" y="195" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.8">small, secure final image</text>')
+  };
+
+  // ---- Hidden classes ----
+  D["hidden-classes"] = {
+    title: "Same shape → same hidden class → fast inline caches",
+    svg: svg("720 210",
+      box(40, 40, 280, 60, "{ x, y } added in order\\n→ hidden class C0→C1→C2", "rgba(63,174,80,0.12)") +
+      box(40, 130, 280, 50, "{ y, x } different order\\n→ a DIFFERENT hidden class", "rgba(248,81,73,0.12)") +
+      box(420, 40, 260, 60, "monomorphic call site\\n(one shape) = fastest", "rgba(63,174,80,0.14)") +
+      box(420, 130, 260, 50, "megamorphic (many shapes)\\n= V8 gives up optimising", "rgba(248,81,73,0.12)") +
+      arrow(320, 70, 420, 70) + arrow(320, 155, 420, 155))
+  };
+
+  Object.keys(D).forEach(function () {}); // no-op to keep diff readable
   window.DIAGRAMS = D;
 })();

@@ -16,6 +16,8 @@ objectives:
 
 Every non-trivial business workflow touches more than one service: placing an order reserves inventory, charges a card, and sends a confirmation email. If the charge succeeds but the reservation fails, you have oversold. If the email fires before the payment clears, you have a support nightmare. In a monolith you would wrap this in a database transaction. In a distributed system, you have no shared transaction manager. The **saga pattern** is the industry-standard solution, and understanding it is the difference between a system that is eventually consistent by design and one that is corrupt by accident.
 
+@diagram:saga
+
 ## Learning objectives
 
 - Explain why **two-phase commit (2PC)** does not scale and what problems it leaves behind.

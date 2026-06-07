@@ -16,6 +16,8 @@ objectives:
 
 A single Socket.IO process can comfortably handle tens of thousands of concurrent connections. But traffic grows, you deploy a second instance, and suddenly half of your users stop receiving messages from the other half — because the two processes share nothing. This is the **multi-instance problem**, and every production real-time system must solve it. The canonical solution in the Node.js ecosystem is a **Redis pub/sub adapter** that turns Redis into a shared message bus: one instance publishes, Redis fans out to all instances, each instance delivers to its local clients. Understanding this pattern is what separates a toy chat app from a production-grade one.
 
+@diagram:pubsub-fanout
+
 ## Learning objectives
 
 - Describe the **multi-instance problem** and why it silently breaks room broadcasts.

@@ -48,6 +48,9 @@ npx serve .
 - Hand-drawn **concept diagrams** (event loop, streams/backpressure, GC, circuit breaker, …),
   an **"On this page"** mini-TOC with scroll-spy, and a per-lesson **reading-progress bar**.
 - A **settings panel** (gear icon): adjust reading text size, export/import/reset your progress.
+- A searchable **Glossary** (107 terms), **API cheat-sheets** for 16 core modules (166 APIs), and a
+  printable **completion certificate** with per-module "mastered" badges — all reachable from the
+  home page and the command palette.
 - **Next / Previous** navigation (or use the ← / → arrow keys), a collapsible sidebar,
   light/dark themes (`t` to toggle), and **automatic progress tracking** saved in your browser.
 

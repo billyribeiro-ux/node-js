@@ -296,11 +296,30 @@
     current = null;
   }
 
+  /* ---------- reference / certificate pages ---------- */
+  function renderCustom(node, title) {
+    current = null;
+    if (window.Sidebar) {
+      var toc = document.getElementById("toc");
+      if (toc) toc.querySelectorAll(".toc-lesson.active").forEach(function (el) { el.classList.remove("active"); });
+    }
+    setContent(node);
+    document.body.classList.remove("sidebar-open");
+    teardown = setupLessonChrome(node);
+    document.title = title + " — Ultimate Node.js Course";
+  }
+
   /* ---------- route handling ---------- */
   function handle() {
     var hash = location.hash.replace(/^#/, "");
     if (!hash || hash === "/" ) { renderLanding(); return; }
     var parts = hash.split("/").filter(Boolean); // [moduleId, lessonId]
+
+    // Special appendix routes.
+    if (parts[0] === "glossary" && window.Reference) { renderCustom(window.Reference.glossaryPage(), "Glossary"); return; }
+    if (parts[0] === "cheatsheets" && window.Reference) { renderCustom(window.Reference.cheatsheetPage(parts[1]), "Cheat-sheets"); return; }
+    if (parts[0] === "certificate" && window.Certificate) { renderCustom(window.Certificate.page(), "Certificate"); return; }
+
     var entry = window.COURSE.flat.find(function (l) {
       return l.moduleId === parts[0] && l.id === parts[1];
     });
